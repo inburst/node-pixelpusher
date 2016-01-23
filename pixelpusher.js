@@ -179,6 +179,7 @@ var PixelPusher = function(options) {
         }
     }, TIMEOUT_CHECK_MILLIS);
 };
+
 // build the PP obj to contain the necessary EventEmitter methods
 util.inherits(PixelPusher, Emitter);
 
@@ -199,6 +200,8 @@ var Controller = function(params) {
 
     that.currentStripData = [];
 
+    console.log('New controller intialized');
+
     for (i = 0; i < that.params.pixelpusher.numberStrips; i++) {
         that.currentStripData.push({
             strip_id : i,
@@ -206,36 +209,45 @@ var Controller = function(params) {
         });
     }
 };
+
 // build the Controller obj to contain the necessary EventEmitter methods
 util.inherits(Controller, Emitter);
 
 Controller.prototype.refresh = function(strips) {
     var i,j, m, n, numbers, offset;
-
     var packet = null;
-    var stripId = null;
     var that = this;
-    that = this;
 
     // Format checking
     // and unchanged strip checking
     var updatedValidStrips = [];
+
     for (i = 0; i < strips.length; i++) {
-        stripId = strips[i].stripId;
+        var stripId = strips[i].strip_id;
 
         // confirm proper strip numbering
         if ((stripId < 0) || (stripId >= that.params.pixelpusher.numberStrips)) {
             throw new Error('strips must be numbered from 0..' + (that.params.pixelpusher.numberStrips-1+' current value ['+n+']'));
         }
 
-        // filter out sending dup data
-        if (that.currentStripData.length>0 && buffertools.equals(strips[i].data, that.currentStripData[i].data)) {
+        if( !that.currentStripData[i] || that.currentStripData.length == 0) {
+            // console.log('Strip #' + stripId + ' empty');
             continue;
+        }
+
+        //TODO: Figure out why skipping a row does not work
+        // filter out sending dup data
+        if (buffertools.equals(strips[i].data, that.currentStripData[i].data)) {
+            //console.log('Strip #' + stripId + ' unchanged');
+            //continue;
+        } else {
+            console.log('Strip #' + stripId + ' valid');
         }
 
         // push the valid strip
         updatedValidStrips.push(strips[i]);
     }
+
     strips = updatedValidStrips;
     that.currentStripData = strips;
 
@@ -306,7 +318,7 @@ Controller.prototype.refresh = function(strips) {
         for (i = 0; i < stripsInThisPacket; i++) {
             var strip = strips[stripIdx];
             // mark the strip id
-            packet.writeUInt8(stripIdx, pointerPosition);
+            packet.writeUInt8(strip.strip_id, pointerPosition);
             // move for the int32
             pointerPosition += 1;
 

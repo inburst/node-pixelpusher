@@ -27,7 +27,7 @@
         "node"         : ">=0.8"
     },
     "dependencies"   : {
-        "buffertools"  : "2.1.2"
+        "buffertools"  : ">=2.1.2"
     },
     "readmeFilename" : "README.md",
     "license": "MIT"
