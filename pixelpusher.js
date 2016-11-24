@@ -382,19 +382,19 @@ Controller.prototype.trimStaleMessages = function(controller) {
 };
 
 Controller.prototype.clearStrips = function() {
-    const NUM_STRIPS = this.params.pixelpusher.numberStrips
-    const PIXELS_PER_STRIP = this.params.pixelpusher.pixelsPerStrip
+    var NUM_STRIPS = this.params.pixelpusher.numberStrips
+    var PIXELS_PER_STRIP = this.params.pixelpusher.pixelsPerStrip
     
     for (var i = 0; i < 2; i++) {
         if (typeof NUM_STRIPS != "number" || typeof PIXELS_PER_STRIP != "number") {
             throw new Error("Cannot find pixels per strip or number of strips")
         }
 
-        const strips = [];
+        var strips = [];
         for (var stripId = 0; stripId < NUM_STRIPS; stripId++) {
-            const s = new PixelStrip(stripId, PIXELS_PER_STRIP);
+            var s = new PixelStrip(stripId, PIXELS_PER_STRIP);
             s.clear()
-            const renderedStripData = s.getStripData();
+            var renderedStripData = s.getStripData();
             strips.push(renderedStripData);
         }
         this.refresh(strips);
