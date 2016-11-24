@@ -212,6 +212,7 @@ util.inherits(Controller, Emitter);
 Controller.prototype.refresh = function(strips) {
     var i,j, m, n, numbers, offset;
 
+
     var packet = null;
     var stripId = null;
     var that = this;
@@ -229,7 +230,8 @@ Controller.prototype.refresh = function(strips) {
         }
 
         // filter out sending dup data
-        if (that.currentStripData.length>0 && buffertools.equals(strips[i].data, that.currentStripData[i].data)) {
+        if (typeof that.currentStripData[i] != "undefined" || 
+            (that.currentStripData.length > 0 && buffertools.equals(strips[i].data, that.currentStripData[i].data))) {
             continue;
         }
 
@@ -378,6 +380,26 @@ Controller.prototype.trimStaleMessages = function(controller) {
     // simple trim to the latest 2 packets
     controller.messages = controller.messages.slice(0,2);
 };
+
+Controller.prototype.clearStrips = function() {
+    const NUM_STRIPS = this.params.pixelpusher.numberStrips
+    const PIXELS_PER_STRIP = this.params.pixelpusher.pixelsPerStrip
+    
+    for (var i = 0; i < 2; i++) {
+        if (typeof NUM_STRIPS != "number" || typeof PIXELS_PER_STRIP != "number") {
+            throw new Error("Cannot find pixels per strip or number of strips")
+        }
+
+        const strips = [];
+        for (var stripId = 0; stripId < NUM_STRIPS; stripId++) {
+            const s = new PixelStrip(stripId, PIXELS_PER_STRIP);
+            s.clear()
+            const renderedStripData = s.getStripData();
+            strips.push(renderedStripData);
+        }
+        this.refresh(strips);
+    }
+}
 
 PixelPusher.PixelStrip = PixelStrip;
 PixelPusher.Pixel = Pixel;
