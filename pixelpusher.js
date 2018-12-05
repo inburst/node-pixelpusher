@@ -201,7 +201,7 @@ var Controller = function(params) {
     for (i = 0; i < that.params.pixelpusher.numberStrips; i++) {
         that.currentStripData.push({
             strip_id : i,
-            data : new Buffer(0)
+            data : Buffer.alloc(0)
         });
     }
 };
@@ -287,7 +287,7 @@ Controller.prototype.refresh = function(strips) {
         }
         // build a buffer of the approiate size
         var packetLength = sequenceDenotationLength + totalPixelDataLength;
-        packet = new Buffer(packetLength);
+        packet = Buffer.alloc(packetLength);
         // initialize the buffer with all 0's
         packet.fill(0x00);
 

@@ -1,6 +1,6 @@
 {
     "name"           : "heroic-pixel-pusher",
-    "version"        : "0.2.4",
+    "version"        : "0.3.0",
     "description"    : "Heroic Robotics' Pixel Pusher LED controller node js interface",
     "author"         : "Aaron Jones <aaron@inburst.io>",
     "contributors"         : [
@@ -24,7 +24,7 @@
     ],
     "main"           : "./pixelpusher.js",
     "engines"        : {
-        "node"         : ">=0.11"
+        "node"         : ">=5.10"
     },
     "dependencies"   : {},
     "readmeFilename" : "README.md",
