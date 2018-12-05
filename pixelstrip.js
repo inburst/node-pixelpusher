@@ -14,6 +14,11 @@ module.exports = function(stripId, numPixels) {
         pixels.push(new Pixel());
     }
 
+    this.clear = function() {
+        for (var i = 0; i < NUM_PIXELS; i ++){
+            pixels[i].setColor(0, 0, 0, 0);
+        }
+    }
 
     this.setStripColor = function(r, g, b, a){
         for (var i = 0; i < NUM_PIXELS; i ++){
