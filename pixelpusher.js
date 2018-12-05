@@ -3,8 +3,7 @@
 // Aaron Jones <aaron@inburst.io>
 //******************************************************************************
 
-var buffertools = require('buffertools'),
-    dgram       = require('dgram'),
+var dgram       = require('dgram'),
     Emitter     = require('events').EventEmitter,
     util        = require('util');
 
@@ -231,7 +230,7 @@ Controller.prototype.refresh = function(strips) {
 
         // filter out sending dup data
         if (typeof that.currentStripData[i] != "undefined" || 
-            (that.currentStripData.length > 0 && buffertools.equals(strips[i].data, that.currentStripData[i].data))) {
+            (that.currentStripData.length > 0 && strips[i].data.equals( that.currentStripData[i].data ))) {
             continue;
         }
 
