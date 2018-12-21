@@ -3,8 +3,7 @@
 // Aaron Jones <aaron@inburst.io>
 //******************************************************************************
 
-var buffertools = require('buffertools'),
-    dgram       = require('dgram'),
+var dgram       = require('dgram'),
     Emitter     = require('events').EventEmitter,
     util        = require('util');
 
@@ -202,7 +201,7 @@ var Controller = function(params) {
     for (i = 0; i < that.params.pixelpusher.numberStrips; i++) {
         that.currentStripData.push({
             strip_id : i,
-            data : new Buffer(0)
+            data : Buffer.alloc(0)
         });
     }
 };
@@ -231,7 +230,7 @@ Controller.prototype.refresh = function(strips) {
 
         // filter out sending dup data
         if (typeof that.currentStripData[i] != "undefined" || 
-            (that.currentStripData.length > 0 && buffertools.equals(strips[i].data, that.currentStripData[i].data))) {
+            (that.currentStripData.length > 0 && strips[i].data.equals( that.currentStripData[i].data ))) {
             continue;
         }
 
@@ -288,7 +287,7 @@ Controller.prototype.refresh = function(strips) {
         }
         // build a buffer of the approiate size
         var packetLength = sequenceDenotationLength + totalPixelDataLength;
-        packet = new Buffer(packetLength);
+        packet = Buffer.alloc(packetLength);
         // initialize the buffer with all 0's
         packet.fill(0x00);
 

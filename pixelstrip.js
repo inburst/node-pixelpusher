@@ -29,7 +29,7 @@ module.exports = function(stripId, numPixels) {
     this.getStripData = function(){
         var strip = {
             strip_id : STRIP_ID,
-            data : new Buffer(3 * NUM_PIXELS)
+            data : Buffer.alloc(3 * NUM_PIXELS)
         }
         // fill the buffer with off pixels
         strip.data.fill(0x00);
